@@ -6,15 +6,15 @@ import { Link, useParams } from "react-router-dom";
 
 interface LessonProps {
   title: string;
-  slugProps: string;
+  slug: string;
   availableAt: Date;
   type: "live" | "class";
 }
 
-export function Lesson({ title, slugProps, availableAt, type }: LessonProps) {
-  const isLessonAvailable = isPast(availableAt);
+export function Lesson(props: LessonProps) {
+  const isLessonAvailable = isPast(props.availableAt);
   const availableDateFormatted = format(
-    availableAt,
+    props.availableAt,
     "EEE' • ' d 'de' MMMM' • 'k'h':mm",
     {
       locale: ptBR,
@@ -23,10 +23,10 @@ export function Lesson({ title, slugProps, availableAt, type }: LessonProps) {
 
   const { slug } = useParams<{ slug: string }>();
 
-  const isActiveLesson = slug === slugProps;
+  const isActiveLesson = slug === props.slug;
 
   return (
-    <Link to={`/event/lesson/${slugProps}`} className="group">
+    <Link to={`/event/lesson/${props.slug}`} className="group">
       <span className="text-gray-300">{availableDateFormatted}</span>
 
       <div
@@ -67,7 +67,7 @@ export function Lesson({ title, slugProps, availableAt, type }: LessonProps) {
               }
             )}
           >
-            {type === "live" ? "AO VIVO" : "AULA PRÁTICA"}
+            {props.type === "live" ? "AO VIVO" : "AULA PRÁTICA"}
           </span>
         </header>
         <strong
@@ -76,7 +76,7 @@ export function Lesson({ title, slugProps, availableAt, type }: LessonProps) {
             "text-gray-200": !isActiveLesson,
           })}
         >
-          {title}
+          {props.title}
         </strong>
       </div>
     </Link>
